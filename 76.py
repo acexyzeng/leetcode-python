@@ -26,5 +26,26 @@ class Solution:
                 l += 1
         return ''if minR == float('inf') else s[minL:minR+1]
 
+# solution 2
+    def minWindow2(self,s,t):
+        
+        count = Counter(t)
+        miss = len(t) # recording, the recent window 
+        i = m = n = 0
+        for j,v in enumerate(s,1): #slide to right
+            miss -= (count[v] > 0)
+            count[v] -= 1
+            if not miss: # recent window meets requirment
+                while i < j and count[s[i]] < 0: #left side pull back
+                    count[s[i]] += 1 
+                    i += 1
+                if not n or j-i <= n - m: # renew recent window
+                    n,m = j,i
+        return s[m:n]
 
+
+if __name__ == "__main__":
+    solu = Solution()
+    s, t = 'ADOBECODEBANC', 'ABC'
+    print(solu.minWindow(s,t))
 
